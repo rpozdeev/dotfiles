@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Проверяем, что аргументы переданы
+function check_args() {
+  if [ -z "$1" ]; then
+    echo "Не переданы аргументы: $0 <environment>"
+    echo "Пример: $0 dev"
+    return 1
+  fi
+  return 0
+}
+
+# Устанавливаем переменную окружения
+function set_environment() {
+  local env="$1"
+
+  case "$env" in
+  infra)
+    export ENVIRONMENT="infra"
+    echo "Переменные установленны для 'infra'"
+    ;;
+  dev)
+    export ENVIRONMENT="dev"
+    echo "Переменные установленны для 'dev'"
+    ;;
+  test)
+    export ENVIRONMENT="test"
+    echo "Переменные установленны для 'test'"
+    ;;
+  stage)
+    export ENVIRONMENT="stage"
+    echo "Переменные установленны для 'stage'"
+    ;;
+  prod)
+    export ENVIRONMENT="prod"
+    echo "Переменные установленны для 'prod'"
+    ;;
+  *)
+    echo "Неизвестное окружение: $1"
+    echo "Доступные окружения: infra, dev, test, stage, perf, prod"
+    return 1
+    ;;
+  esac
+
+  return 0
+}
+
+function main() {
+  check_args "$1" || return 1
+  set_environment "$1" || return 1
+}
+
+main "$@"
